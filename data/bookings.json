@@ -1,0 +1,51 @@
+[
+  {
+    "booking_ref": "BK-102",
+    "patient_name": "John Doe",
+    "preferred_day": "Monday",
+    "time_slot": "8:30 PM",
+    "booked_at": "2026-11-14T13:48:22.790809"
+  },
+  {
+    "booking_ref": "BK-102",
+    "patient_name": "Imran Khan",
+    "preferred_day": "Monday",
+    "time_slot": "3:00 PM",
+    "booked_at": "2026-11-14T13:53:23.861244"
+  },
+  {
+    "booking_ref": "BK-103",
+    "patient_name": "My name is",
+    "preferred_day": "Monday",
+    "time_slot": "3 PM",
+    "booked_at": "2026-11-14T14:09:19.992272"
+  },
+  {
+    "booking_ref": "BK-104",
+    "patient_name": "Manish",
+    "preferred_day": "Monday",
+    "time_slot": "5 PM",
+    "booked_at": "2026-11-14T14:10:02.730765"
+  },
+  {
+    "booking_ref": "BK-105",
+    "patient_name": "Aksha Khan",
+    "preferred_day": "Monday",
+    "time_slot": "12 PM",
+    "booked_at": "2026-11-14T14:18:12.876142"
+  },
+  {
+    "booking_ref": "BK-106",
+    "patient_name": "Michael",
+    "preferred_day": "17 November 2026",
+    "time_slot": "2 PM",
+    "booked_at": "2026-11-14T17:07:23.598731"
+  },
+  {
+    "booking_ref": "BK-107",
+    "patient_name": "Milan Khan",
+    "preferred_day": "Monday",
+    "time_slot": "10 AM",
+    "booked_at": "2026-11-14T18:58:04.659056"
+  }
+]

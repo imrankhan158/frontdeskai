@@ -1,0 +1,302 @@
+[
+  {
+    "session_id": "test-room-41211d",
+    "timestamp": "2026-11-14T14:08:56.234212",
+    "duration_seconds": 121.91,
+    "turns_count": 19,
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "groq/openai/gpt-oss-20b",
+      "tts": "cartesia/sonic-3.6"
+    },
+    "latency_ms": {
+      "ttft": {
+        "avg": 331.46,
+        "p95": 459.44,
+        "samples": [
+          176.26,
+          346.48,
+          320.84,
+          400.84,
+          365.24,
+          449.36,
+          362.95,
+          249.81,
+          399.55,
+          456.62,
+          129.87,
+          259.84,
+          130.61,
+          484.78,
+          415.66,
+          396.81,
+          355.33,
+          226.59,
+          370.34
+        ]
+      },
+      "ttfa": {
+        "avg": 124.69,
+        "p95": 247.97,
+        "samples": [
+          103.98,
+          75.69,
+          300.52,
+          125.34,
+          80.01,
+          113.66,
+          73.64
+        ]
+      },
+      "voice_to_voice_turn": {
+        "avg": 820.69,
+        "p95": 953.86
+      }
+    },
+    "usage": {
+      "prompt_tokens": 13613,
+      "completion_tokens": 880,
+      "total_tokens": 14493,
+      "tts_characters": 899,
+      "stt_audio_seconds": 100.5,
+      "tts_audio_seconds": 70.88
+    },
+    "economics": {
+      "stt_cost_usd": 0.007202,
+      "llm_cost_usd": 0.001285,
+      "tts_cost_usd": 0.067425,
+      "total_cost_usd": 0.075912,
+      "total_cost_inr": 6.4526,
+      "cost_per_minute_usd": 0.0374,
+      "cost_per_minute_inr": 3.18
+    }
+  },
+  {
+    "session_id": "test-room-dcb2e9",
+    "timestamp": "2026-11-14T14:16:18.222391",
+    "duration_seconds": 164.92,
+    "turns_count": 27,
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "groq/openai/gpt-oss-20b",
+      "tts": "cartesia/sonic-3.6"
+    },
+    "latency_ms": {
+      "ttft": {
+        "avg": 429.12,
+        "p95": 667.94,
+        "samples": [
+          469.46,
+          432.78,
+          457.77,
+          704.63,
+          154.26,
+          345.66,
+          462.44,
+          219.47,
+          495.39,
+          348.29,
+          471.05,
+          481.87,
+          648.4,
+          453.82,
+          265.59,
+          252.76,
+          271.95,
+          461.23,
+          404.95,
+          534.45,
+          435.42,
+          674.38,
+          335.85,
+          453.55,
+          233.54,
+          652.92,
+          464.47
+        ]
+      },
+      "ttfa": {
+        "avg": 76.69,
+        "p95": 105.72,
+        "samples": [
+          63.13,
+          82.63,
+          73.23,
+          61.74,
+          87.16,
+          99.49,
+          71.3,
+          100.42,
+          65.1,
+          62.35,
+          57.88,
+          59.01,
+          118.09,
+          84.51,
+          64.31
+        ]
+      },
+      "voice_to_voice_turn": {
+        "avg": 854.08,
+        "p95": 1116.41
+      }
+    },
+    "usage": {
+      "prompt_tokens": 23699,
+      "completion_tokens": 952,
+      "total_tokens": 24651,
+      "tts_characters": 1048,
+      "stt_audio_seconds": 140.9,
+      "tts_audio_seconds": 71.52
+    },
+    "economics": {
+      "stt_cost_usd": 0.010098,
+      "llm_cost_usd": 0.002063,
+      "tts_cost_usd": 0.0786,
+      "total_cost_usd": 0.090761,
+      "total_cost_inr": 7.7147,
+      "cost_per_minute_usd": 0.033,
+      "cost_per_minute_inr": 2.81
+    }
+  },
+  {
+    "session_id": "test-room-dab0e7",
+    "timestamp": "2026-11-14T17:06:06.349821",
+    "duration_seconds": 28.1,
+    "turns_count": 1,
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "groq/openai/gpt-oss-20b",
+      "tts": "cartesia/sonic-3.6"
+    },
+    "latency_ms": {
+      "ttft": {
+        "avg": 519.7
+      },
+      "ttfa": {
+        "avg": 62.3
+      },
+      "voice_to_voice_turn": {
+        "avg": 932.0
+      }
+    },
+    "economics": {
+      "total_cost_usd": 0.007,
+      "total_cost_inr": 0.59,
+      "cost_per_minute_usd": 0.015,
+      "cost_per_minute_inr": 1.27
+    }
+  },
+  {
+    "session_id": "test-room-f55eef",
+    "timestamp": "2026-11-14T17:06:37.419454",
+    "duration_seconds": 93.1,
+    "turns_count": 14,
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "groq/openai/gpt-oss-20b",
+      "tts": "cartesia/sonic-3.6"
+    },
+    "latency_ms": {
+      "ttft": {
+        "avg": 370.8
+      },
+      "ttfa": {
+        "avg": 83.5
+      },
+      "voice_to_voice_turn": {
+        "avg": 804.3
+      }
+    },
+    "economics": {
+      "total_cost_usd": 0.0233,
+      "total_cost_inr": 1.98,
+      "cost_per_minute_usd": 0.015,
+      "cost_per_minute_inr": 1.27
+    }
+  },
+  {
+    "session_id": "test-room-626b05",
+    "timestamp": "2026-11-14T18:56:29.859213",
+    "duration_seconds": 39.6,
+    "turns_count": 2,
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "groq/qwen/qwen3.8-27b",
+      "tts": "cartesia/sonic-3.6"
+    },
+    "latency_ms": {
+      "ttft": {
+        "avg": 132.1
+      },
+      "ttfa": {
+        "avg": 57.5
+      },
+      "voice_to_voice_turn": {
+        "avg": 539.6
+      }
+    },
+    "economics": {
+      "total_cost_usd": 0.0099,
+      "total_cost_inr": 0.84,
+      "cost_per_minute_usd": 0.015,
+      "cost_per_minute_inr": 1.27
+    }
+  },
+  {
+    "session_id": "test-room-db2cdb",
+    "timestamp": "2026-11-14T19:00:51.378950",
+    "duration_seconds": 242.1,
+    "turns_count": 11,
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "groq/openai/gpt-oss-20b",
+      "tts": "cartesia/sonic-3.6"
+    },
+    "latency_ms": {
+      "ttft": {
+        "avg": 444.3
+      },
+      "ttfa": {
+        "avg": 71.9
+      },
+      "voice_to_voice_turn": {
+        "avg": 866.2
+      }
+    },
+    "economics": {
+      "total_cost_usd": 0.0605,
+      "total_cost_inr": 5.14,
+      "cost_per_minute_usd": 0.015,
+      "cost_per_minute_inr": 1.27
+    }
+  },
+  {
+    "session_id": "test-room-dd4872",
+    "timestamp": "2026-11-14T19:05:23.193387",
+    "duration_seconds": 37.3,
+    "turns_count": 1,
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "groq/openai/gpt-oss-20b",
+      "tts": "cartesia/sonic-3.6"
+    },
+    "latency_ms": {
+      "ttft": {
+        "avg": 547.2
+      },
+      "ttfa": {
+        "avg": 58.1
+      },
+      "voice_to_voice_turn": {
+        "avg": 955.3
+      }
+    },
+    "economics": {
+      "total_cost_usd": 0.0093,
+      "total_cost_inr": 0.79,
+      "cost_per_minute_usd": 0.015,
+      "cost_per_minute_inr": 1.27
+    }
+  }
+]

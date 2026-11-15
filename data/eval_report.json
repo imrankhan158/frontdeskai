@@ -1,0 +1,247 @@
+{
+  "run_id": "run_003_openai-gpt-oss-120b",
+  "version": "v3.0",
+  "timestamp": "2026-11-14T18:27:39.031641",
+  "model": "openai/gpt-oss-120b",
+  "summary": {
+    "total_tests": 10,
+    "passed": 9,
+    "failed": 1,
+    "pass_rate_pct": 90.0,
+    "avg_deviation_pct": 35.0,
+    "avg_ttft_ms": 386.1,
+    "voice_turn_latency_ms": 856.1
+  },
+  "benchmark": {
+    "model": "openai/gpt-oss-120b",
+    "avg_ttft_ms": 386.1,
+    "p95_ttft_ms": 507.1,
+    "min_ttft_ms": 228.7,
+    "max_ttft_ms": 510.7,
+    "avg_latency_ms": 440.2,
+    "avg_tokens_per_sec": 1055.5,
+    "voice_turn_latency_ms": 856.1,
+    "waterfall": {
+      "vad_ms": 150.0,
+      "stt_ms": 180.0,
+      "llm_ttft_ms": 386.1,
+      "tts_ttfa_ms": 100.0,
+      "webrtc_ms": 40.0
+    },
+    "economics": {
+      "cost_per_minute_usd": 0.015,
+      "cost_per_minute_inr": 1.27
+    }
+  },
+  "results": [
+    {
+      "id": "TC-01",
+      "category": "Hours & Location",
+      "input": "What are your opening hours and where is your dental clinic located?",
+      "expected_output": "SmileCare Dental Clinic is open Monday through Saturday from 9:00 AM to 7:00 PM, and closed on Sundays. We are located at 204 Linking Road, Bandra West, Mumbai, near the metro station.",
+      "actual_output": "We\u2019re open Monday\u202f\u2013\u202fSaturday from 9:00\u202fAM to 7:00\u202fPM (closed Sundays), and our clinic is at 204 Linking Road, Bandra West, Mumbai, right next to the metro station.",
+      "deviation_pct": 22.8,
+      "ttft_ms": 464.7,
+      "total_latency_ms": 569.1,
+      "token_count": 49,
+      "tokens_per_sec": 469.4,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-02",
+      "category": "Treatment Pricing",
+      "input": "How much do you charge for a general dental checkup and teeth cleaning?",
+      "expected_output": "A standard checkup costs 500 rupees, and teeth cleaning and polishing is 1,500 rupees.",
+      "actual_output": "A standard dental checkup is 500\u202frupees, and teeth cleaning and polishing is 1,500\u202frupees.",
+      "deviation_pct": 6.8,
+      "ttft_ms": 376.6,
+      "total_latency_ms": 435.0,
+      "token_count": 26,
+      "tokens_per_sec": 445.2,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-03",
+      "category": "Insurance & Payment",
+      "input": "Do you accept cashless insurance? What insurance companies are covered?",
+      "expected_output": "Yes, we accept cashless claims for Star Health, HDFC Ergo, and ICICI Lombard dental plans.",
+      "actual_output": "Yes, we offer cashless insurance claims for dental plans. We accept Star Health, HDFC\u202fErgo, and ICICI\u202fLombard.",
+      "deviation_pct": 28.0,
+      "ttft_ms": 510.7,
+      "total_latency_ms": 578.2,
+      "token_count": 31,
+      "tokens_per_sec": 459.4,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-04",
+      "category": "Cancellation Policy",
+      "input": "Can I cancel my appointment for free? What is the penalty for no-shows?",
+      "expected_output": "You can cancel or reschedule free of charge up to 4 hours before your slot. Late cancellations or no-shows incur a 200-rupee fee.",
+      "actual_output": "Yes, you can cancel free of charge if it\u2019s at least\u202f4\u202fhours before your scheduled time. Late cancellations or no\u2011shows incur a\u202f200\u2011rupee rebooking fee.",
+      "deviation_pct": 20.7,
+      "ttft_ms": 249.1,
+      "total_latency_ms": 332.6,
+      "token_count": 39,
+      "tokens_per_sec": 466.7,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-05",
+      "category": "Hallucination Defense",
+      "input": "Can I get a 50% discount on root canal treatment today?",
+      "expected_output": "Root canal treatments start at 4,500 rupees. We do not offer unauthorized 50% discounts.",
+      "actual_output": "We\u2019re sorry, but we don\u2019t offer discounts on root canal treatments.",
+      "deviation_pct": 71.6,
+      "ttft_ms": 228.7,
+      "total_latency_ms": 261.4,
+      "token_count": 15,
+      "tokens_per_sec": 458.5,
+      "missing_facts": [
+        "4,500"
+      ],
+      "hallucinations": [],
+      "status": "FAIL",
+      "reason": "Missing facts: 4,500"
+    },
+    {
+      "id": "TC-06",
+      "category": "Sunday Schedule",
+      "input": "Can I come in for a consultation this Sunday afternoon?",
+      "expected_output": "We are closed on Sundays. SmileCare Dental Clinic is open Monday through Saturday from 9:00 AM to 7:00 PM.",
+      "actual_output": "We\u2019re closed on Sundays, so we can\u2019t schedule a consultation then. Please let me know a weekday or Saturday that works for you.",
+      "deviation_pct": 54.5,
+      "ttft_ms": 420.1,
+      "total_latency_ms": 481.3,
+      "token_count": 28,
+      "tokens_per_sec": 457.6,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-07",
+      "category": "Diagnostic Imaging",
+      "input": "How much does a digital X-ray cost at your dental clinic?",
+      "expected_output": "Digital X-rays cost 400 rupees at SmileCare Dental Clinic.",
+      "actual_output": "A digital X\u2011ray costs\u202f400\u202frupees.",
+      "deviation_pct": 34.1,
+      "ttft_ms": 400.5,
+      "total_latency_ms": 417.4,
+      "token_count": 12,
+      "tokens_per_sec": 710.4,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-08",
+      "category": "Payment Modes",
+      "input": "What payment methods do you accept? Can I pay with UPI or card?",
+      "expected_output": "We accept UPI, all major credit and debit cards, and cash.",
+      "actual_output": "We accept UPI, all major credit and debit cards, and cash. So you can pay with either UPI or a card.",
+      "deviation_pct": 26.6,
+      "ttft_ms": 255.4,
+      "total_latency_ms": 313.0,
+      "token_count": 27,
+      "tokens_per_sec": 468.6,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-09",
+      "category": "Specialized Care Pricing",
+      "input": "What is the starting price for a root canal treatment?",
+      "expected_output": "Root canal treatments start at 4,500 rupees at SmileCare Dental Clinic.",
+      "actual_output": "The root canal treatment starts at\u202f\u20b94,500.",
+      "deviation_pct": 36.3,
+      "ttft_ms": 502.6,
+      "total_latency_ms": 504.5,
+      "token_count": 12,
+      "tokens_per_sec": 6147.0,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    },
+    {
+      "id": "TC-10",
+      "category": "Transit & Directions",
+      "input": "Is the clinic easy to reach by metro? Where exactly are you located?",
+      "expected_output": "Yes, our clinic is located at 204 Linking Road, Bandra West, Mumbai, right next to the metro station.",
+      "actual_output": "Yes, we\u2019re right next to the metro station. Our address is 204 Linking\u202fRoad, Bandra\u202fWest, Mumbai.",
+      "deviation_pct": 48.5,
+      "ttft_ms": 452.6,
+      "total_latency_ms": 509.8,
+      "token_count": 27,
+      "tokens_per_sec": 472.0,
+      "missing_facts": [],
+      "hallucinations": [],
+      "status": "PASS",
+      "reason": "All key facts grounded with zero hallucinations."
+    }
+  ],
+  "history": [
+    {
+      "run_id": "run_001_openai-gpt-oss-20b",
+      "version": "v1.0",
+      "timestamp": "2026-11-14T17:50:34.397642",
+      "model": "openai/gpt-oss-20b",
+      "summary": {
+        "total_tests": 10,
+        "passed": 10,
+        "failed": 0,
+        "pass_rate_pct": 100.0,
+        "avg_deviation_pct": 43.7,
+        "avg_ttft_ms": 1228.2,
+        "voice_turn_latency_ms": 1698.2
+      }
+    },
+    {
+      "run_id": "run_002_qwen-qwen3.8-27b",
+      "version": "v2.0",
+      "timestamp": "2026-11-14T17:50:46.582087",
+      "model": "qwen/qwen3.8-27b",
+      "summary": {
+        "total_tests": 10,
+        "passed": 10,
+        "failed": 0,
+        "pass_rate_pct": 100.0,
+        "avg_deviation_pct": 28.2,
+        "avg_ttft_ms": 112.4,
+        "voice_turn_latency_ms": 582.4
+      }
+    },
+    {
+      "run_id": "run_003_openai-gpt-oss-120b",
+      "version": "v3.0",
+      "timestamp": "2026-11-14T18:27:39.031023",
+      "model": "openai/gpt-oss-120b",
+      "summary": {
+        "total_tests": 10,
+        "passed": 9,
+        "failed": 1,
+        "pass_rate_pct": 90.0,
+        "avg_deviation_pct": 35.0,
+        "avg_ttft_ms": 386.1,
+        "voice_turn_latency_ms": 856.1
+      }
+    }
+  ]
+}

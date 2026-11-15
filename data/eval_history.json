@@ -1,0 +1,47 @@
+[
+  {
+    "run_id": "run_001_openai-gpt-oss-20b",
+    "version": "v1.0",
+    "timestamp": "2026-11-14T17:50:34.397642",
+    "model": "openai/gpt-oss-20b",
+    "summary": {
+      "total_tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "pass_rate_pct": 100.0,
+      "avg_deviation_pct": 43.7,
+      "avg_ttft_ms": 1228.2,
+      "voice_turn_latency_ms": 1698.2
+    }
+  },
+  {
+    "run_id": "run_002_qwen-qwen3.8-27b",
+    "version": "v2.0",
+    "timestamp": "2026-11-14T17:50:46.582087",
+    "model": "qwen/qwen3.8-27b",
+    "summary": {
+      "total_tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "pass_rate_pct": 100.0,
+      "avg_deviation_pct": 28.2,
+      "avg_ttft_ms": 112.4,
+      "voice_turn_latency_ms": 582.4
+    }
+  },
+  {
+    "run_id": "run_003_openai-gpt-oss-120b",
+    "version": "v3.0",
+    "timestamp": "2026-11-14T18:27:39.031023",
+    "model": "openai/gpt-oss-120b",
+    "summary": {
+      "total_tests": 10,
+      "passed": 9,
+      "failed": 1,
+      "pass_rate_pct": 90.0,
+      "avg_deviation_pct": 35.0,
+      "avg_ttft_ms": 386.1,
+      "voice_turn_latency_ms": 856.1
+    }
+  }
+]

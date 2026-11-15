@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FrontDesk AI</title>
+
+  <!-- LiveKit WebRTC SDK -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/livekit-client/2.24.0/livekit-client.umd.js"
+    integrity="sha512-inHMRDoVifYC3Wi69KF4UyxsFps+j3vxfdW3FbkXxxl/zZwYwT7jnWFKhaTtfYdYjjqvs2oGqbzMbm6MUnkCKw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Separated Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+
+<body>
+  <div class="header">
+    <h2>FrontDesk AI</h2>
+    <p>Real-Time Self-Hosted Voice Assistant & Benchmark Telemetry</p>
+  </div>
+
+  <!-- Navigation Tabs (4 Clean Views) -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-call-btn" onclick="switchTab('call')">
+      📞 Call
+    </button>
+    <button class="tab-btn" id="tab-bookings-btn" onclick="switchTab('bookings')">
+      📅 Bookings <span id="bookingBadge" class="tab-count">0</span>
+    </button>
+    <button class="tab-btn" id="tab-telemetry-btn" onclick="switchTab('telemetry')">
+      📊 Telemetry <span id="telemetryBadge" class="tab-count">0</span>
+    </button>
+    <button class="tab-btn" id="tab-benchmarks-btn" onclick="switchTab('benchmarks')">
+      ⚡ Benchmarks
+    </button>
+  </div>
+
+  <!-- Tab 1: Live Voice Call -->
+  <div id="tab-call" class="tab-content active">
+    <div class="controls">
+      <button id="connectBtn" class="btn btn-primary">Start Call</button>
+      <button id="disconnectBtn" class="btn btn-danger" disabled>End Call</button>
+    </div>
+
+    <div class="hud">
+      <div id="status">Status: Disconnected</div>
+      <div class="hud-metrics">
+        <span>Turn: <span id="lastLatency" class="badge">-- ms</span></span>
+        <span>Avg: <span id="avgLatency" class="badge">-- ms</span></span>
+        <span>Cost/Min: <span id="estCost" class="badge fast">~$0.045 (₹3.8)</span></span>
+      </div>
+    </div>
+
+    <div id="transcriptBox">
+      <div class="empty-state" id="emptyState">
+        Click <strong>Start Call</strong> to begin talking.<br />
+        Try asking: <em>"What are your hours?"</em> or <em>"Book an appointment for Monday at 3 PM"</em>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Bookings UI -->
+  <div id="tab-bookings" class="tab-content">
+    <div class="panel-header">
+      <h3 class="panel-title">Confirmed Clinic Appointments</h3>
+      <button class="btn-action" onclick="loadBookings()">🔄 Refresh</button>
+    </div>
+    <div id="bookingsList" class="bookings-container">
+      <div class="empty-state">Loading bookings...</div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Telemetry & Cost Dashboard -->
+  <div id="tab-telemetry" class="tab-content">
+    <div class="panel-header">
+      <h3 class="panel-title">Production Latency & Cost Telemetry</h3>
+      <button class="btn-action" onclick="loadTelemetry()">🔄 Refresh</button>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Avg LLM TTFT</div>
+        <div class="kpi-value" id="kpi-ttft">-- ms</div>
+        <div class="kpi-sub">Groq openai/gpt-oss-20b</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg TTS TTFA</div>
+        <div class="kpi-value" id="kpi-ttfa">-- ms</div>
+        <div class="kpi-sub">Cartesia sonic-3.6</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Voice Turn Latency</div>
+        <div class="kpi-value" id="kpi-turn">-- ms</div>
+        <div class="kpi-sub">Human threshold: &lt; 800ms</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Effective Cost / Min</div>
+        <div class="kpi-value" id="kpi-cost">--</div>
+        <div class="kpi-sub">STT + LLM + TTS combined</div>
+      </div>
+    </div>
+
+    <div class="panel-header" style="margin-top: 18px;">
+      <h4 class="panel-title" style="font-size: 14px;">Historical Call Sessions</h4>
+    </div>
+    <div id="sessionsList" class="sessions-container">
+      <div class="empty-state">Loading telemetry logs...</div>
+    </div>
+  </div>
+
+  <!-- Tab 4: Benchmarks & Evaluations Comparison Dashboard -->
+  <div id="tab-benchmarks" class="tab-content">
+    <div class="panel-header" style="flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+      <div>
+        <h3 class="panel-title">Model Evaluation & Benchmark Comparison</h3>
+        <p style="font-size: 12px; color: #6b7280; margin: 3px 0 0 0;">
+          Comparative analysis across evaluated models measuring fact recall, hallucination defense, real TTFT, and turn
+          latency
+        </p>
+      </div>
+      <div
+        style="font-size: 11.5px; color: #64748b; background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-weight: 500;">
+        📊 Analytics & Comparison Mode
+      </div>
+    </div>
+
+    <!-- 1. All Generated Reports Comparison Table (Leaderboard) -->
+    <div id="evalsHistoryWrap"
+      style="margin-bottom: 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+        <h5 style="margin: 0; font-size: 13.5px; font-weight: 700; color: #111827;">🏆 Model Benchmark Comparison Matrix
+        </h5>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <select id="historyVersionDropdown" onchange="loadEvalRun(this.value)"
+            style="padding: 4px 8px; font-size: 11px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-family: inherit;">
+            <option value="">Select Run to Compare...</option>
+          </select>
+          <span id="currentVersionBadge" class="badge-pill"
+            style="background: #e0e7ff; color: #3730a3; font-weight: 600; font-size: 11px;">Latest</span>
+        </div>
+      </div>
+      <div id="evalsHistoryTable" style="overflow-x: auto;">
+        <div style="font-size: 12px; color: #9ca3af;">Loading comparison reports...</div>
+      </div>
+    </div>
+
+    <!-- 2. Selected Model KPI Cards -->
+    <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 14px;">
+      <div class="kpi-card" style="padding: 10px;">
+        <div class="kpi-label" style="font-size: 11px;">Pass Rate</div>
+        <div class="kpi-value" id="eval-kpi-pass" style="font-size: 18px; color: #166534;">-- %</div>
+      </div>
+      <div class="kpi-card" style="padding: 10px;">
+        <div class="kpi-label" style="font-size: 11px;">Avg Deviation</div>
+        <div class="kpi-value" id="eval-kpi-dev" style="font-size: 18px;">-- %</div>
+      </div>
+      <div class="kpi-card" style="padding: 10px;">
+        <div class="kpi-label" style="font-size: 11px;">Avg TTFT</div>
+        <div class="kpi-value" id="eval-kpi-ttft" style="font-size: 18px;">-- ms</div>
+      </div>
+      <div class="kpi-card" style="padding: 10px;">
+        <div class="kpi-label" style="font-size: 11px;">Total Tests</div>
+        <div class="kpi-value" id="eval-kpi-total" style="font-size: 18px;">--</div>
+      </div>
+    </div>
+
+    <!-- 3. Latency Waterfall for Selected Run -->
+    <div class="waterfall-card" style="margin-bottom: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h4 style="font-size: 13px; margin: 0; color: #111827;">
+          Voice-to-Voice Latency Waterfall (<span id="waterfallModelName">Selected Model</span>)
+        </h4>
+        <span id="waterfallTotalTurn"
+          style="font-size: 12px; font-weight: 700; color: #2563eb; font-family: ui-monospace, monospace;">-- ms</span>
+      </div>
+      <div class="waterfall-step">
+        <span class="waterfall-label">1. Silero VAD Endpointing</span>
+        <div class="waterfall-bar-wrap">
+          <div class="waterfall-bar" style="width: 17%; background: #64748b;"></div>
+        </div>
+        <span class="waterfall-val">150 ms</span>
+      </div>
+      <div class="waterfall-step">
+        <span class="waterfall-label">2. Deepgram Nova-3 STT</span>
+        <div class="waterfall-bar-wrap">
+          <div class="waterfall-bar" style="width: 21%; background: #3b82f6;"></div>
+        </div>
+        <span class="waterfall-val">180 ms</span>
+      </div>
+      <div class="waterfall-step">
+        <span class="waterfall-label">3. LLM Brain TTFT</span>
+        <div class="waterfall-bar-wrap">
+          <div class="waterfall-bar" id="waterfall-groq-bar" style="width: 45%; background: #10b981;"></div>
+        </div>
+        <span class="waterfall-val" id="waterfall-groq-val">-- ms</span>
+      </div>
+      <div class="waterfall-step">
+        <span class="waterfall-label">4. Cartesia TTFA (1st Audio)</span>
+        <div class="waterfall-bar-wrap">
+          <div class="waterfall-bar" id="waterfall-cartesia-bar" style="width: 17%; background: #8b5cf6;"></div>
+        </div>
+        <span class="waterfall-val" id="waterfall-cartesia-val">100 ms</span>
+      </div>
+      <div class="waterfall-step">
+        <span class="waterfall-label">5. WebRTC Buffer Traversal</span>
+        <div class="waterfall-bar-wrap">
+          <div class="waterfall-bar" style="width: 5%; background: #94a3b8;"></div>
+        </div>
+        <span class="waterfall-val">40 ms</span>
+      </div>
+    </div>
+
+    <!-- 4. Historical Inspection Banner -->
+    <div id="historicalBanner"
+      style="display: none; margin-bottom: 14px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; justify-content: space-between; align-items: center;">
+      <div style="font-size: 12.5px; color: #92400e;">
+        <strong>🕒 Inspecting Historical Run:</strong> <span id="historicalBannerText">v1.0 • openai/gpt-oss-20b</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-inspect" onclick="openCurrentMarkdownReport()">📄 View Markdown Report</button>
+        <button class="btn-inspect" style="background: #f59e0b; color: #fff; border-color: #d97706;"
+          onclick="loadEvalRun(null)">🔄 Return to Latest</button>
+      </div>
+    </div>
+
+    <!-- 5. Test Cases Section with Filters -->
+    <div
+      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+      <h5 style="margin: 0; font-size: 13px; font-weight: 600; color: #374151;">Detailed Test Cases Breakdown</h5>
+      <div style="display: flex; gap: 4px;">
+        <button id="filterBtnAll" class="btn-inspect active-view" onclick="setTestFilter('ALL')">All (<span
+            id="countAll">0</span>)</button>
+        <button id="filterBtnFail" class="btn-inspect" onclick="setTestFilter('FAIL')">❌ Failures (<span
+            id="countFail">0</span>)</button>
+        <button id="filterBtnPass" class="btn-inspect" onclick="setTestFilter('PASS')">✅ Passed (<span
+            id="countPass">0</span>)</button>
+      </div>
+    </div>
+
+    <div id="evalsList" class="sessions-container">
+      <div class="empty-state">Loading evaluations...</div>
+    </div>
+  </div>
+
+  <div id="audioContainer"></div>
+
+  <!-- Markdown Report Viewer Modal -->
+  <div id="mdModal" class="modal-overlay" onclick="if(event.target===this) closeMarkdownModal()">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h4 id="mdModalTitle" style="margin: 0; font-size: 13.5px; font-weight: 600; color: #111827;">📄 Evaluation
+          Report</h4>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button id="copyMdBtn" class="btn-inspect" onclick="copyMarkdownContent()">📋 Copy Markdown</button>
+          <button class="modal-close-btn" onclick="closeMarkdownModal()">&times;</button>
+        </div>
+      </div>
+      <div id="mdModalBody" class="modal-body">Loading report...</div>
+    </div>
+  </div>
+
+  <!-- Separated Modular Scripts -->
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/voice.js"></script>
+  <script src="/static/js/bookings.js"></script>
+  <script src="/static/js/telemetry.js"></script>
+  <script src="/static/js/evals.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

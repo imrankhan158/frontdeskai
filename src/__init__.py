@@ -1,0 +1,1 @@
+"""FrontDeskAI application package."""

@@ -1,0 +1,124 @@
+{
+  "timestamp": "2026-11-14T14:02:57.221537",
+  "llm_benchmarks": [
+    {
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "mode": "Live Benchmark",
+      "avg_ttft_ms": 386.1,
+      "p95_ttft_ms": 507.1,
+      "avg_total_latency_ms": 417.87,
+      "samples_count": 3
+    },
+    {
+      "provider": "OpenRouter",
+      "model": "anthropic/claude-3.5-sonnet",
+      "mode": "Empirical Baseline (Add OPENROUTER_API_KEY to test live)",
+      "avg_ttft_ms": 680.0,
+      "p95_ttft_ms": 840.0,
+      "avg_total_latency_ms": 1420.0
+    }
+  ],
+  "tts_benchmarks": [
+    {
+      "provider": "Cartesia",
+      "model": "sonic-3.6",
+      "avg_ttfa_ms": 147.74,
+      "p95_ttfa_ms": 159.48,
+      "samples_count": 3
+    },
+    {
+      "provider": "Deepgram Aura",
+      "model": "aura-2-thalia-en",
+      "avg_ttfa_ms": 770.15,
+      "p95_ttfa_ms": 890.69,
+      "samples_count": 3
+    }
+  ],
+  "architectures": [
+    {
+      "name": "Config A: Low-Latency Champion (Default)",
+      "description": "Ultra-fast conversational turns with natural vocal prosody. Ideal for front-desk receptionists.",
+      "llm": "openai/gpt-oss-120b",
+      "llm_provider": "Groq LPU",
+      "tts": "sonic-3.6",
+      "tts_provider": "Cartesia",
+      "ttft_ms": 386.1,
+      "ttfa_ms": 147.74,
+      "turn_latency_ms": 856.1,
+      "llm_cost_per_min": 0.00015749999999999998,
+      "tts_cost_per_min": 0.042749999999999996,
+      "stt_cost_per_min_usd": 0.00215,
+      "llm_cost_per_min_usd": 0.00016,
+      "tts_cost_per_min_usd": 0.04275,
+      "cost_per_minute_usd": 0.0451,
+      "cost_per_minute_inr": 3.83,
+      "cost_per_5min_call_usd": 0.225,
+      "cost_per_5min_call_inr": 19.15,
+      "cost_per_1000_calls_usd": 225.3
+    },
+    {
+      "name": "Config B: Ultra-Lean Budget Champion",
+      "description": "Single-vendor speech infrastructure (Deepgram STT + TTS) paired with Groq. 5x cheaper voice costs.",
+      "llm": "openai/gpt-oss-20b",
+      "llm_provider": "Groq LPU",
+      "tts": "aura-2-thalia-en",
+      "tts_provider": "Deepgram Aura",
+      "ttft_ms": 393.32,
+      "ttfa_ms": 770.15,
+      "turn_latency_ms": 1493.5,
+      "llm_cost_per_min": 0.00015749999999999998,
+      "tts_cost_per_min": 0.008549999999999999,
+      "stt_cost_per_min_usd": 0.00215,
+      "llm_cost_per_min_usd": 0.00016,
+      "tts_cost_per_min_usd": 0.00855,
+      "cost_per_minute_usd": 0.0109,
+      "cost_per_minute_inr": 0.92,
+      "cost_per_5min_call_usd": 0.054,
+      "cost_per_5min_call_inr": 4.61,
+      "cost_per_1000_calls_usd": 54.3
+    },
+    {
+      "name": "Config C: Complex Reasoning Champion",
+      "description": "Claude 3.5 Sonnet through OpenRouter paired with Cartesia. Exceptional for complex sales & nuances.",
+      "llm": "anthropic/claude-3.5-sonnet",
+      "llm_provider": "OpenRouter / Claude",
+      "tts": "sonic-3.6",
+      "tts_provider": "Cartesia",
+      "ttft_ms": 680.0,
+      "ttfa_ms": 147.74,
+      "turn_latency_ms": 1157.7,
+      "llm_cost_per_min": 0.006750000000000001,
+      "tts_cost_per_min": 0.042749999999999996,
+      "stt_cost_per_min_usd": 0.00215,
+      "llm_cost_per_min_usd": 0.00675,
+      "tts_cost_per_min_usd": 0.04275,
+      "cost_per_minute_usd": 0.0517,
+      "cost_per_minute_inr": 4.39,
+      "cost_per_5min_call_usd": 0.258,
+      "cost_per_5min_call_inr": 21.95,
+      "cost_per_1000_calls_usd": 258.2
+    },
+    {
+      "name": "Config D: Enterprise Frontier Hybrid",
+      "description": "Claude 3.5 Sonnet paired with Deepgram Aura for balanced reasoning costs.",
+      "llm": "anthropic/claude-3.5-sonnet",
+      "llm_provider": "OpenRouter / Claude",
+      "tts": "aura-2-thalia-en",
+      "tts_provider": "Deepgram Aura",
+      "ttft_ms": 680.0,
+      "ttfa_ms": 770.15,
+      "turn_latency_ms": 1780.2,
+      "llm_cost_per_min": 0.006750000000000001,
+      "tts_cost_per_min": 0.008549999999999999,
+      "stt_cost_per_min_usd": 0.00215,
+      "llm_cost_per_min_usd": 0.00675,
+      "tts_cost_per_min_usd": 0.00855,
+      "cost_per_minute_usd": 0.0175,
+      "cost_per_minute_inr": 1.48,
+      "cost_per_5min_call_usd": 0.087,
+      "cost_per_5min_call_inr": 7.42,
+      "cost_per_1000_calls_usd": 87.2
+    }
+  ]
+}
