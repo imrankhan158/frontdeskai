@@ -16,3 +16,11 @@ wheels/
 
 # macOS
 .DS_Store
+
+# Terraform local state & cache
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+!example.tfvars
