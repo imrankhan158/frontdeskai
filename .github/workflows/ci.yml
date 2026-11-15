@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -7,41 +7,87 @@ on:
     branches: [main]
 
 jobs:
+  # ========================================================
+  # JOB 1: Tests & Linting
+  # ========================================================
   test-and-lint:
     name: Code Quality & Tests
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Clone repo into the GitHub runner VM
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      # Step 1: Clone repo into the GitHub runner VM
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    # Step 2: Install uv with built-in dependency caching
-    - name: Set up uv
-      uses: astral-sh/setup-uv@v5
-    
+      # Step 2: Install uv with built-in dependency caching
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          version: "latest"
 
-    # Step 3: Install Python 3.12 via uv
-    - name: Setup up Python
-      run: uv python install 3.12
-    
-    # Step 4: Install dependencies from uv.lock
-    - name: Install Dependencies
-      run: uv sync
-    
-    # Step 5: Syntax & Code Style Check (fast lint)
-    - name: Run Ruff Linter
-      run: uv run ruff check .
-      continue-on-error: true # for testing
-    
-    # Step 6: Runi Unit & Smoke tests
-    - name: Run Pytest
-      env:
-        # Dummy values for CI so config.py doesn't crash on missing env vars
-        LIVEKIT_URL: "wss://test.livekit.cloud"
-        LIVEKIT_API_KEY: "test_key"
-        LIVEKIT_API_SECRET: "test_secret"
-        OPENROUTER_API_KEY: "test_openrouter"
-      run: uv run pytest
+      # Step 3: Install Python 3.12 via uv
+      - name: Set up Python
+        run: uv python install 3.12
 
-    
+      # Step 4: Install dependencies from uv.lock
+      - name: Install Dependencies
+        run: uv sync
+
+      # Step 5: Syntax & Code Style Check (fast lint)
+      - name: Run Ruff Linter
+        run: uv run ruff check .
+
+      # Step 6: Run Unit & Smoke Tests
+      - name: Run Pytest
+        env:
+          # Dummy values for CI so config.py doesn't crash on missing env vars
+          LIVEKIT_URL: "wss://test.livekit.cloud"
+          LIVEKIT_API_KEY: "test_key"
+          LIVEKIT_API_SECRET: "test_secret"
+          OPENROUTER_API_KEY: "test_openrouter"
+        run: uv run pytest
+
+  # ========================================================
+  # JOB 2: Build & Push Docker Image to AWS ECR
+  # ========================================================
+  build-and-push:
+    name: Build & Push to AWS ECR
+    runs-on: ubuntu-latest
+    needs: test-and-lint
+    # Only run on pushes to main/master (skip on pull requests)
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 1: Configure AWS Credentials from GitHub Secrets
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+      # Step 2: Log into Amazon ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Step 3: Build, tag, and push image to AWS ECR
+      - name: Build, Tag, and Push Docker Image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY || 'frontdeskai' }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          echo "Building Docker image for $ECR_REGISTRY/$ECR_REPOSITORY..."
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+                       -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          
+          echo "Pushing $IMAGE_TAG to AWS ECR..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+          echo "Pushing latest tag to AWS ECR..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
