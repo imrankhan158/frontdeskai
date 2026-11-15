@@ -1,0 +1,47 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-lint:
+    name: Code Quality & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Clone repo into the GitHub runner VM
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Step 2: Install uv with built-in dependency caching
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+    
+
+    # Step 3: Install Python 3.12 via uv
+    - name: Setup up Python
+      run: uv python install 3.12
+    
+    # Step 4: Install dependencies from uv.lock
+    - name: Install Dependencies
+      run: uv sync
+    
+    # Step 5: Syntax & Code Style Check (fast lint)
+    - name: Run Ruff Linter
+      run: uv run ruff check .
+      continue-on-error: true # for testing
+    
+    # Step 6: Runi Unit & Smoke tests
+    - name: Run Pytest
+      env:
+        # Dummy values for CI so config.py doesn't crash on missing env vars
+        LIVEKIT_URL: "wss://test.livekit.cloud"
+        LIVEKIT_API_KEY: "test_key"
+        LIVEKIT_API_SECRET: "test_secret"
+        OPENROUTER_API_KEY: "test_openrouter"
+      run: uv run pytest
+
+    
